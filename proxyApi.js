@@ -9,39 +9,84 @@ app.use(express.json());
 const headers = {
  headers: {
   "User-Agent": "Mozilla/5.0",
- }
+ },
 };
 
 async function reqGET(url) {
  try {
   const response = await axios.get(url, { ...headers, responseType: "text" });
-  return { data: response.data, status: response.status, headers: response.headers };
+  return {
+   data: response.data,
+   status: response.status,
+   headers: response.headers,
+  };
  } catch (error) {
-  return { data: error.toString(), status: 500, headers: { "Content-Type": "text/plain" } };
+  return {
+   data: error.toString(),
+   status: 500,
+   headers: { "Content-Type": "text/plain" },
+  };
+ }
 }
 
 async function reqPOST(url, body) {
  try {
-  const response = await axios.post(url, body, { ...headers, responseType: "text" });
-  return { data: response.data, status: response.status, headers: response.headers };
+  const response = await axios.post(url, body, {
+   ...headers,
+   responseType: "text",
+  });
+  return {
+   data: response.data,
+   status: response.status,
+   headers: response.headers,
+  };
  } catch (error) {
-  return { data: error.toString(), status: 500, headers: { "Content-Type": "text/plain" } };
+  return {
+   data: error.toString(),
+   status: 500,
+   headers: { "Content-Type": "text/plain" },
+  };
+ }
 }
 
 async function reqPUT(url, body) {
  try {
-  const response = await axios.put(url, body, { ...headers, responseType: "text" });
-  return { data: response.data, status: response.status, headers: response.headers };
+  const response = await axios.put(url, body, {
+   ...headers,
+   responseType: "text",
+  });
+  return {
+   data: response.data,
+   status: response.status,
+   headers: response.headers,
+  };
  } catch (error) {
-  return { data: error.toString(), status: 500, headers: { "Content-Type": "text/plain" } };
+  return {
+   data: error.toString(),
+   status: 500,
+   headers: { "Content-Type": "text/plain" },
+  };
+ }
 }
 
 async function reqDELETE(url) {
  try {
-  const response = await axios.delete(url, { ...headers, responseType: "text" });
-  return { data: response.data, status: response.status, headers: response.headers };
+  const response = await axios.delete(url, {
+   ...headers,
+   responseType: "text",
+  });
+  return {
+   data: response.data,
+   status: response.status,
+   headers: response.headers,
+  };
  } catch (error) {
-  return { data: error.toString(), status: 500, headers: { "Content-Type": "text/plain" } };
+  return {
+   data: error.toString(),
+   status: 500,
+   headers: { "Content-Type": "text/plain" },
+  };
+ }
 }
 
 app.get("/get", async (req, res) => {
