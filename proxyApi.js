@@ -1,9 +1,10 @@
 import axios from "axios";
 import express from "express";
+import cors from "cors";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
-
+app.use(cors());
 app.use(express.json());
 
 const headers = {
@@ -88,6 +89,50 @@ async function reqDELETE(url) {
   };
  }
 }
+
+app.get("/", (req, res) => {
+ res.setHeader("Content-Type", "text/html; charset=utf-8");
+ res.send(`
+    <h1>API Proxy - Ejemplos de uso</h1>
+    <h2>GET</h2>
+    <pre>
+curl "https://proxyapi-nev5.onrender.com/get?link=https://www.example.com"
+    </pre>
+    <h2>POST</h2>
+    <pre>
+curl -X POST "https://proxyapi-nev5.onrender.com/post" \\
+  -H "Content-Type: application/json" \\
+  -d '{"link":"https://jsonplaceholder.typicode.com/posts","payload":{"title":"foo","body":"bar","userId":1}}'
+    </pre>
+    <h2>PUT</h2>
+    <pre>
+curl -X PUT "https://proxyapi-nev5.onrender.com/put" \\
+  -H "Content-Type: application/json" \\
+  -d '{"link":"https://jsonplaceholder.typicode.com/posts/1","payload":{"title":"foo","body":"bar","userId":1}}'
+    </pre>
+    <h2>DELETE</h2>
+    <pre>
+curl -X DELETE "https://proxyapi-nev5.onrender.com/delete" \\
+  -H "Content-Type: application/json" \\
+  -d '{"link":"https://jsonplaceholder.typicode.com/posts/1"}'
+    </pre>
+
+    <h2>Ejemplo usando fetch (JavaScript)</h2>
+    <pre>
+fetch('/get?link=https://www.example.com')
+  .then(res => res.text())
+  .then(console.log);
+
+fetch('/post', {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: JSON.stringify({link: 'https://jsonplaceholder.typicode.com/posts', payload: {title: 'foo', body: 'bar', userId: 1}})
+})
+  .then(res => res.json())
+  .then(console.log);
+    </pre>
+  `);
+});
 
 app.get("/get", async (req, res) => {
  const url = req.query.link;
