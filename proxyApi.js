@@ -19,7 +19,7 @@ async function reqGET(link) {
  try {
   if (!link) {
    return {
-    data: JSON.stringify({ MessageError: "Parámetro 'link' faltante" }),
+    data: JSON.stringify({ MessageError: "Error en el link" }),
     status: 400,
     headers: { "Content-Type": "application/json" },
    };
@@ -196,3 +196,4 @@ app.delete("/delete", async (req, res) => {
 app.listen(PORT, () => {
  console.log(`Servicio corriendo en el puerto ${PORT}`);
 });
+
