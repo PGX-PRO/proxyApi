@@ -1,6 +1,8 @@
 import axios from "axios";
 import express from "express";
 import cors from "cors";
+import path from "path";
+import url from "url";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -13,9 +15,35 @@ const headers = {
  },
 };
 
-async function reqGET(url) {
+async function reqGET(link) {
  try {
-  const response = await axios.get(url, { ...headers, responseType: "text" });
+  if (!link) {
+   return {
+    data: JSON.stringify({ MessageError: "Parámetro 'link' faltante" }),
+    status: 400,
+    headers: { "Content-Type": "application/json" },
+   };
+  }
+
+  const decodedUrl = decodeURIComponent(link);
+  const pathname = new URL(decodedUrl).pathname;
+  const extension = path.extname(pathname).toLowerCase();
+
+  if (extension && extension.length > 1) {
+   return {
+    data: JSON.stringify({
+     MessageError: "Carga de archivos no permitida",
+    }),
+    status: 400,
+    headers: { "Content-Type": "application/json" },
+   };
+  }
+
+  const response = await axios.get(decodedUrl, {
+   ...headers,
+   responseType: "text",
+  });
+
   return {
    data: response.data,
    status: response.status,
@@ -23,9 +51,12 @@ async function reqGET(url) {
   };
  } catch (error) {
   return {
-   data: error.toString(),
+   data: JSON.stringify({
+    MessageError: "Error al procesar la solicitud",
+    Detalle: error.toString(),
+   }),
    status: 500,
-   headers: { "Content-Type": "text/plain" },
+   headers: { "Content-Type": "application/json" },
   };
  }
 }
